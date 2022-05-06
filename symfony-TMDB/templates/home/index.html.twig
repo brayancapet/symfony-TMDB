@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Movie App!{% endblock %}
+
+{% block body %}
+    {# <div class="container mt-4">
+        <div class="card text-center">
+            <div class="card-header">
+            Featured
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">Chiffre Covid en France :</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Patients en réanimation : {{ data.0.rea }}</li>
+                    <li class="list-group-item">Hospitalisés : {{ data.0.hosp }}</li>
+                    <li class="list-group-item">Décés à l'hopital : {{ data.0.dchosp }} </li>
+                    <li class="list-group-item">De retour chez eux : {{ data.0.incid_rad }} </li>
+                </ul>
+            </div>
+            
+            <div class="card-footer text-muted">
+                Actualisé le : {{data.0.date}}
+            </div>
+        </div>
+    </div> #}
+
+    
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-around flex-wrap">
+        
+        {% for movie in popularMovies.results %}
+                <div class="card mt-3" style="width: 18rem;">
+                <img src="{{ image_url }}{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ movie.release_date }}</h6>
+                        <p class="card-text">{{ movie.overview }}</p>
+                    </div>
+                </div>
+        {% endfor %}
+
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
+

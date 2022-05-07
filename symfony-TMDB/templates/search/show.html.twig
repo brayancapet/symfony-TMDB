@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Get a movie !{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12 d-flex justify-content-around flex-wrap">
+        {% for movie in wanted_movie.results %}
+            <div class="card mt-3" style="width: 18rem;">
+                <img src="{{ image_url }}{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ movie.release_date }}</h6>
+                        <p class="card-text">{{ movie.overview }}</p>
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+{% endblock %}

@@ -21,25 +21,30 @@ class FilmController extends AbstractController
         $form = $this->createForm(FilmType::class, $film);
         // Récupération du $_GET ou du $_POST
         $form->handleRequest($request);
+        
         // Récupération de l'utilisateur connecté
         $user = $this->getUser();
+        
+        
         // Si le formulaire est envoyé 
         if ($form->isSubmitted() && $form->isValid()){
-            // Ajout de l'id de l'utilisateur 
+        //     // Ajout de l'id de l'utilisateur 
             $film->setUser($user);
-
-            // Sauvegarde dans la bdd
+            
+        //     // Sauvegarde dans la bdd
             $em = $doctrine->getManager();
             $em->persist($film);
             $em->flush();
             $this->addFlash('success', 'Votre film est enregistré');
-            // Redirection vers la page login
-            return $this->redirectToRoute('show_film');
+        //     // Redirection vers la page login
+        //     return $this->redirectToRoute('show_film');
         }
 
         return $this->render('film/index.html.twig', [
             'form'=> $form->createView(),
         ]);
+
+        
     }
 
     #[Route('/films', name: 'show_film')]

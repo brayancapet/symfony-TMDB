@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Get a movie !{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center">
+        {{ form_start(form) }}
+
+        <div class="mb-3">
+        {{ form_row(form.titre, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="mb-3 d-flex justify-content-center">
+        {{ form_row(form.submit, {'attr': {'class': 'btn', 'class' : 'btn-primary'}}) }}
+        </div>
+
+        {{ form_end(form) }}
+        
+    </div>
+
+    <div class="container">
+        <div class="row">
+             <div class="col-md-12 d-flex justify-content-around flex-wrap container-results">
+
+             </div>
+        </div>
+    </div>
+<script>
+    const searchInput = document.querySelector('#search_form_titre');
+    const searchSubmit = document.querySelector('#search_form_submit');
+    const container_results = document.querySelector('.container-results');
+    const image_url = 'https://image.tmdb.org/t/p/w500';
+    
+    
+    function searchMovie(event){
+        event.preventDefault();
+
+        console.log(searchInput.value);
+        let search_url = searchInput.value;
+        let base_url = `https://api.themoviedb.org/3/search/movie?api_key=8eae384dba33ed6324a4721fd9112cf2&query=${search_url}`;
+        fetch(base_url)
+        .then(response => response.json())
+        .then(data => {
+            for(const film of data.results){
+            console.log(film);
+            let div = document.createElement("div");
+            div.classList.add('card', 'mt-3');
+            div.style.width = '18rem';
+            div.innerHTML = `
+                <img src="${image_url}${film.poster_path}" class="card-img-top" alt="${film.title}">
+                    <div class="card-body">
+                        <h5 class="card-title">${film.title}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${film.release_date}</h6>
+                        <p class="card-text">${film.overview }</p>
+                    </div>
+            `;
+            container_results.appendChild(div);
+            
+        }
+        }).catch(console.error);
+        
+        
+    }
+
+    searchSubmit.addEventListener('click', searchMovie);
+</script>
+{% endblock %}
+
+

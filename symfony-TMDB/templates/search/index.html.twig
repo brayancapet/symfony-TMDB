@@ -3,6 +3,12 @@
 {% block title %}Get a movie !{% endblock %}
 
 {% block body %}
+<script>
+    
+    {# for(btn of info_btn){
+        btn.addEventListener('click', GetMovieInfo);
+    } #}
+</script>
     <div class="container d-flex justify-content-center">
         {{ form_start(form) }}
 
@@ -31,9 +37,9 @@
     const container_results = document.querySelector('.container-results');
     const image_url = 'https://image.tmdb.org/t/p/w500';
     
-    
     function searchMovie(event){
         event.preventDefault();
+        container_results.innerHTML = '';
 
         console.log(searchInput.value);
         let search_url = searchInput.value;
@@ -46,23 +52,54 @@
             let div = document.createElement("div");
             div.classList.add('card', 'mt-3');
             div.style.width = '18rem';
+            div.style.cursor = 'pointer';
+            div.value = film.id;
             div.innerHTML = `
                 <img src="${image_url}${film.poster_path}" class="card-img-top" alt="${film.title}">
                     <div class="card-body">
                         <h5 class="card-title">${film.title}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">${film.release_date}</h6>
-                        <p class="card-text">${film.overview }</p>
+                            <h6 class="card-footer mt-3" style="width: fit-content;">👍${film.vote_average}👎</h6>
+                        <input type="hidden" id="film_id" value="${film.id}">
                     </div>
             `;
+            div.addEventListener('click', function(){
+                container_results.innerHTML = ""; 
+                let movie_id = this.value;
+                let api_key = '8eae384dba33ed6324a4721fd9112cf2';
+
+                fetch(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${api_key}`)
+                .then(response => response.json())
+                .then(data => {
+                        let div = document.createElement("div");
+                        div.classList.add('card', 'mt-3');
+                        div.style.width = '18rem';
+                        div.style.cursor = 'pointer';
+                        div.value = film.id;
+                        div.innerHTML = `
+                            <img src="${image_url}${data.poster_path}" class="card-img-top" alt="${data.title}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${data.title}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">${data.release_date}</h6>
+                                    <p class="card-text">${data.overview}</p>
+                                    <h6 class="card-footer mt-3" style="width: fit-content;">👍${data.vote_average}👎</h6>
+                                    <input type="hidden" id="film_id" value="${data.id}">
+                                </div>
+                        `;
+                        container_results.appendChild(div);
+                });
+            })
+
             container_results.appendChild(div);
-            
         }
         }).catch(console.error);
         
-        
     }
-
     searchSubmit.addEventListener('click', searchMovie);
+
+
+
+    
 </script>
 {% endblock %}
 

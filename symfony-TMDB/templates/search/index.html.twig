@@ -3,12 +3,6 @@
 {% block title %}Get a movie !{% endblock %}
 
 {% block body %}
-<script>
-    
-    {# for(btn of info_btn){
-        btn.addEventListener('click', GetMovieInfo);
-    } #}
-</script>
     <div class="container d-flex justify-content-center">
         {{ form_start(form) }}
 
@@ -24,6 +18,10 @@
         
     </div>
 
+    <div class="container ">
+        {{ form(film_form) }}
+    </div>
+
     <div class="container">
         <div class="row">
              <div class="col-md-12 d-flex justify-content-around flex-wrap container-results">
@@ -31,12 +29,13 @@
              </div>
         </div>
     </div>
+
+
 <script>
     const searchInput = document.querySelector('#search_form_titre');
     const searchSubmit = document.querySelector('#search_form_submit');
     const container_results = document.querySelector('.container-results');
     const image_url = 'https://image.tmdb.org/t/p/w500';
-    
     function searchMovie(event){
         event.preventDefault();
         container_results.innerHTML = '';
@@ -86,7 +85,15 @@
                                     <input type="hidden" id="film_id" value="${data.id}">
                                 </div>
                         `;
-                        container_results.appendChild(div);
+                        container_results.appendChild(div); 
+                        let film_titre = document.getElementsByName('film[title]');
+                        film_titre.value = `${data.title}`;
+                        film_titre.innerHTML = film_titre.value;
+                        let film_image = document.getElementsByName('film[image]');
+                        film_image.value = `${data.poster_path}`;
+                        let film_synopsis = document.getElementsByName('film[synopsis]');
+                        film_synopsis.value = `${data.overview}`;
+                        console.log(film_titre.value, film_synopsis.value, film_image.value);
                 });
             })
 

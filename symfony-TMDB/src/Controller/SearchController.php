@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Film;
 use App\Entity\Search;
+use App\Form\FilmType;
 use App\Form\SearchFormType;
 use App\Service\CallApiService;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,17 +22,24 @@ class SearchController extends AbstractController
 
         // Nouvelle recherche
         $search = new Search();
+        $film = new Film();
 
         // Création Search form
         $form = $this->createForm(SearchFormType::class, $search);
+        $film_form = $this->createForm(FilmType::class, $film);
 
         // Récupération du $_GET ou $_POST
-        $form->handleRequest($request);
+        // $form->handleRequest($request);
+        $film_form->handleRequest($request);
         
 
-        if ($form->isSubmitted() && $form->isValid()){
-            $data = $form->getData();
-            $search->setTitre($data->getTitre());
+        if ($film_form->isSubmitted() && $film_form->isValid()){
+            $data = $film_form->getData();
+            $film->setTitre($data->getTitre());
+            $user = $this->getUser();
+            $film->setImage($data->getImage());
+            $film->setSynopsis($data->getSynopsis());
+            $film->setUser($user);
         }
         
 
@@ -38,10 +47,12 @@ class SearchController extends AbstractController
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
             'image_url' => $image_url,
+            'film_form' => $film_form->createView(),
         ]);
 
 
     }
 
+    
     
 }

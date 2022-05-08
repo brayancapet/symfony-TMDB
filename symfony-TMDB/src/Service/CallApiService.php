@@ -31,15 +31,4 @@ class CallApiService
         return $this->getApi('/discover/movie?sort_by=popularity.desc');
     }
 
-    public function getParticularMovie($var): array
-    {
-
-        $response = $this->client->request(
-            'GET',
-            "https://api.themoviedb.org/3/search/movie?api_key=8eae384dba33ed6324a4721fd9112cf2&query=" . $var,
-        );
-
-        return $response->toArray();
-    }
-
 }
